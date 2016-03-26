@@ -13,26 +13,29 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GetFeedCommand extends Command
 {
-    protected function configure()
-    {
-        $this->setName('app:feed')
-            ->setDescription('Fetches RSS feed');
-        $this->addOption('published-date-only', 'p', null, 'Returns only the published date');
-    }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        /** @var Parser $parser */
-        $parser = $this->getHelper('container')->getContainer()->getService('Parser');
+	protected function configure()
+	{
+		$this->setName('app:feed')
+			->setDescription('Fetches RSS feed');
+		$this->addOption('published-date-only', 'p', null, 'Returns only the published date');
+	}
 
-        try {
-            $outputString = ($input->getOption('published-date-only')) ? $parser->getPublishedDate() : $parser->getParsedXML();
-        } catch (\ApplicationException $e) {
-            $output->writeLn('<error>' . $e->getMessage() . '</error>');
-            return 1; // non-zero return code means error
-        }
+	protected function execute(InputInterface $input, OutputInterface $output)
+	{
+		/** @var Parser $parser */
+		$parser = $this->getHelper('container')->getContainer()->getService('Parser');
 
-        $output->write($outputString);
-        return 0;
-    }
+		try {
+			$outputString = ($input->getOption('published-date-only')) ? $parser->getPublishedDate() : $parser->getParsedXML(true);
+		} catch (\ApplicationException $e) {
+			$output->writeLn('<error>' . $e->getMessage() . '</error>');
+
+			return 1; // non-zero return code means error
+		}
+
+		$output->write($outputString);
+
+		return 0;
+	}
 }

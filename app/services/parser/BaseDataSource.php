@@ -14,78 +14,88 @@ use App\Exception\InvalidConfigurationException;
  */
 abstract class BaseDataSource
 {
-    /** @var mixed */
-    protected $fetchedData;
 
-    /** @var array */
-    private $parameters;
+	/** @var mixed */
+	protected $fetchedData;
 
-    /**
-     * BaseDataSource constructor.
-     * @param $parameters
-     */
-    public function __construct($parameters)
-    {
-        $this->setParameters($parameters);
-        $this->fetchData();
-    }
+	/** @var array */
+	private $parameters;
 
-    /**
-     * Responsible for fetching remote data into the memory
-     *
-     * @param bool $forceFetch
-     * @return mixed
-     */
-    abstract public function fetchData($forceFetch=false);
-    /**
-     * @return mixed
-     */
-    public function getFetchedData()
-    {
-        return $this->fetchedData;
-    }
+	/**
+	 * BaseDataSource constructor.
+	 *
+	 * @param $parameters
+	 */
+	public function __construct($parameters)
+	{
+		$this->setParameters($parameters);
+		$this->fetchData();
+	}
 
-    /**
-     * @param $fetchedData
-     * @return BaseDataSource
-     */
-    protected function setFetchedData($fetchedData)
-    {
-        $this->fetchedData = $fetchedData;
-        return $this;
-    }
+	/**
+	 * Responsible for fetching remote data into the memory
+	 *
+	 * @param bool $forceFetch
+	 *
+	 * @return mixed
+	 */
+	abstract public function fetchData($forceFetch = false);
 
-    /**
-     * @return array
-     */
-    public function getParameters()
-    {
-        return $this->parameters;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getFetchedData()
+	{
+		return $this->fetchedData;
+	}
 
-    /**
-     * @param $parameters
-     * @return BaseDataSource
-     */
-    public function setParameters($parameters)
-    {
-        $this->parameters = $parameters;
-        
-        return $this;
-    }
+	/**
+	 * @param $fetchedData
+	 *
+	 * @return BaseDataSource
+	 */
+	protected function setFetchedData($fetchedData)
+	{
+		$this->fetchedData = $fetchedData;
 
-    /**
-     * Returns single parameter from injected parameters
-     *
-     * @param $name
-     * @return mixed
-     * @throws InvalidConfigurationException
-     */
-    public function getParameter($name) {
-        $parameters = $this->getParameters();
-        if (!isset($parameters[$name])) {
-            throw new InvalidConfigurationException('Missing configuration parameter ' . $name);
-        }
-        return $parameters[$name];
-    }
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getParameters()
+	{
+		return $this->parameters;
+	}
+
+	/**
+	 * @param $parameters
+	 *
+	 * @return BaseDataSource
+	 */
+	public function setParameters($parameters)
+	{
+		$this->parameters = $parameters;
+
+		return $this;
+	}
+
+	/**
+	 * Returns single parameter from injected parameters
+	 *
+	 * @param $name
+	 *
+	 * @return mixed
+	 * @throws InvalidConfigurationException
+	 */
+	public function getParameter($name)
+	{
+		$parameters = $this->getParameters();
+		if (!isset($parameters[$name])) {
+			throw new InvalidConfigurationException('Missing configuration parameter ' . $name);
+		}
+
+		return $parameters[$name];
+	}
 }

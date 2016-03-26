@@ -1,0 +1,101 @@
+<?php
+/**
+ * @author Jan Kozak <galvani78@gmail.com>
+ * @since 2016-03-24
+ */
+
+namespace App\Parser;
+
+use App\Exception\InvalidConfigurationException;
+
+/**
+ * Class BaseDataSource
+ * @package App\Parser
+ */
+abstract class BaseDataSource
+{
+
+	/** @var mixed */
+	protected $fetchedData;
+
+	/** @var array */
+	private $parameters;
+
+	/**
+	 * BaseDataSource constructor.
+	 *
+	 * @param $parameters
+	 */
+	public function __construct($parameters)
+	{
+		$this->setParameters($parameters);
+		$this->fetchData();
+	}
+
+	/**
+	 * Responsible for fetching remote data into the memory
+	 *
+	 * @param bool $forceFetch
+	 *
+	 * @return mixed
+	 */
+	abstract public function fetchData($forceFetch = false);
+
+	/**
+	 * @return mixed
+	 */
+	public function getFetchedData()
+	{
+		return $this->fetchedData;
+	}
+
+	/**
+	 * @param $fetchedData
+	 *
+	 * @return BaseDataSource
+	 */
+	protected function setFetchedData($fetchedData)
+	{
+		$this->fetchedData = $fetchedData;
+
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getParameters()
+	{
+		return $this->parameters;
+	}
+
+	/**
+	 * @param $parameters
+	 *
+	 * @return BaseDataSource
+	 */
+	public function setParameters($parameters)
+	{
+		$this->parameters = $parameters;
+
+		return $this;
+	}
+
+	/**
+	 * Returns single parameter from injected parameters
+	 *
+	 * @param $name
+	 *
+	 * @return mixed
+	 * @throws InvalidConfigurationException
+	 */
+	public function getParameter($name)
+	{
+		$parameters = $this->getParameters();
+		if (!isset($parameters[$name])) {
+			throw new InvalidConfigurationException('Missing configuration parameter ' . $name);
+		}
+
+		return $parameters[$name];
+	}
+}
