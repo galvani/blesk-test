@@ -1,11 +1,14 @@
-# blesk-test
+# Test parser for blesk.cz
 
-Simple console parser for RSS feed
+##**Simple console parser for RSS feed**
 
-Console use only!
+####Console use only!
 
-== Installation ==
+## Installation
 composer install
 
-== Execution ==
+## Execution
 php www/index.php
+
+## Command line help
+php www/index.php help app
