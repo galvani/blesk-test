@@ -8,7 +8,8 @@
 composer install
 
 ## Execution
-php www/index.php
+Parsed XML: php www/index.php app:feed
+Published date: php www/index.php app:feed -p
 
 ## Command line help
 php www/index.php help app

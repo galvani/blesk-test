@@ -3,7 +3,9 @@
 # https://nette.org/security-warning
 #
 parameters:
-
+    dataSource:
+        rss:
+            url: 'http://www.blesk.cz/rss'
 
 php:
 	date.timezone: Europe/Prague
@@ -20,9 +22,6 @@ session:
 
 
 services:
-	- App\Model\UserManager
-	- App\Forms\FormFactory
-	- App\Forms\SignFormFactory
 	router: App\RouterFactory::createRouter
 	DataSource:
 	    class: App\Parser\RssDataSource(%dataSource%)
